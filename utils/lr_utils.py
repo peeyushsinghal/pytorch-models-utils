@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1Jz8BNhCK6rY8OQ8F7F-tZM2gP9yv8Xjg
 """
 
-!pip install torch_lr_finder
+# !pip install torch_lr_finder
 from torch_lr_finder import LRFinder
 
 
@@ -19,7 +19,13 @@ def find_lr(net, optimizer, criterion, loader):
         criterion (instance): criterion to be used for calculating loss
         loader (instance): torch dataloader instance , ideally training
     """
+
     lr_finder = LRFinder(net, optimizer, criterion, device="cuda")
-    lr_finder.range_test(loader, end_lr=10, num_iter=100, step_mode="exp")
+    lr_finder.range_test(loader, end_lr=10, num_iter=200, step_mode="exp")
     lr_finder.plot()
+    min_loss = min(lr_finder.history['loss'])
+    lr_lowest_loss = lr_finder.history['lr'][np.argmin(lr_finder.history['loss'], axis=0)]
+    print("LR at lowest Loss is {}".format(lr_lowest_loss))
+
     lr_finder.reset()
+    return format(lr_lowest_loss)
