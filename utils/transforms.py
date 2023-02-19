@@ -66,7 +66,7 @@ def apply_transforms_custom_resnet(mean,std_dev):
                 [
                     A.PadIfNeeded(min_height=40, min_width=40, always_apply=True),
                     A.RandomCrop(width=32, height=32, p=1),# Random Crop
-                    A.RandomHorizontalFlip(p = 1), #FlipLR
+                    A.HorizontalFlip(p = 1), #FlipLR
                     A.CoarseDropout(max_holes=1, max_height=8, max_width=8, min_holes=1, min_height=8, min_width=8, fill_value=tuple((x * 255.0 for x in mean)), p=1),# Cutout
                 ],
                 p=0.5,
