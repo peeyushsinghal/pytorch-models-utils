@@ -9,6 +9,7 @@ Original file is located at
 
 # !pip install torch_lr_finder
 from torch_lr_finder import LRFinder
+import numpy as np
 
 
 def find_lr(net, optimizer, criterion, loader):
