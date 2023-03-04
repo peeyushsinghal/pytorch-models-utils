@@ -14,7 +14,7 @@ import torch.nn.functional as F
 
 class Ultimus(nn.Module):
     def __init__(self,device):
-        super(UltimusBlock, self).__init__()
+        super(Ultimus, self).__init__()
         
         self.fc_k=nn.Linear(48,8)
         self.fc_q=nn.Linear(48,8)
