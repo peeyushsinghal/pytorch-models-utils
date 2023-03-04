@@ -20,22 +20,26 @@ class ULTIMUS(nn.Module):
         nn.Linear(in_features = 48, out_features = 8, bias = False),
         nn.ReLU()
     )
-    self.lin2 = nn.Sequential(
-        nn.Linear(in_features = 8, out_features = 48, bias = False),
-        nn.ReLU()
-    )
+    # self.lin2 = nn.Sequential(
+    #     nn.Linear(in_features = 8, out_features = 48, bias = False),
+    #     nn.ReLU()
+    # )
+
+    self.lin2 = nn.Linear(in_features = 8, out_features = 48, bias = False)
     
   def forward(self,x):    
     K = self.lin1(x) # size 8 x1
-    # print(K.shape)
     Q = self.lin1(x) # size 8 x1
     QT = torch.transpose(Q,0,1) # size 1x8
+
     V = self.lin1(x) # size 8
-    QTK = torch.matmul(QT,K)
-    # print(QTK.shape)
-    AM = F.softmax((QTK / pow(8.0,0.5)),dim =-1)
+    
+    QTK = torch.matmul(QT,K) # size 8x8
+    # print("QTK",QTK.shape)
+    # AM = F.softmax((QTK / pow(8.0,0.5)),dim =-1
+    AM = F.softmax((QTK / torch.sqrt(torch.FloatTensor([8]))),dim =-1) # size 8x8
     # print(AM.shape)
-    Z = torch.matmul(V,AM)
+    Z = torch.matmul(V,AM) # # size 8 x1
     # print(Z.shape)
     out = self.lin2(Z)
     # print(out.shape)
@@ -60,8 +64,12 @@ class BasicTransformer(nn.Module):
           nn.AvgPool2d(26)
       )
 
-      ## Transformer Block
-      self.ulitmus = ULTIMUS()
+      ## Transformer Blocks
+      ## Instead of initializing one, we can look to initialize 4 as all would be separate objects
+      self.ulitmus1 = ULTIMUS()
+      self.ulitmus2 = ULTIMUS()
+      self.ulitmus3 = ULTIMUS()
+      self.ulitmus4 = ULTIMUS()
 
       ## Feed Forward Connection
       self.FFC = nn.Linear(in_features = 48, out_features = 10, bias = False)
@@ -72,10 +80,10 @@ class BasicTransformer(nn.Module):
       x = x.view(-1,48)
       # print(x.shape)
 
-      x = self.ulitmus(x)
-      x = self.ulitmus(x)
-      x = self.ulitmus(x)
-      x = self.ulitmus(x)
+      x = self.ulitmus1(x)
+      x = self.ulitmus2(x)
+      x = self.ulitmus3(x)
+      x = self.ulitmus4(x)
       
       x = self.FFC(x)
 
