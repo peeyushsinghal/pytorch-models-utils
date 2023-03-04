@@ -36,8 +36,8 @@ class ULTIMUS(nn.Module):
     
     QTK = torch.matmul(QT,K) # size 8x8
     # print("QTK",QTK.shape)
-    # AM = F.softmax((QTK / pow(8.0,0.5)),dim =-1
-    AM = F.softmax((QTK / torch.sqrt(torch.FloatTensor([8]))),dim =-1) # size 8x8
+    AM = F.softmax((QTK / pow(8.0,0.5)),dim =-1)# size 8x8
+    # AM = F.softmax((QTK / torch.sqrt(torch.FloatTensor([8]))),dim =-1) # size 8x8
     # print(AM.shape)
     Z = torch.matmul(V,AM) # # size 8 x1
     # print(Z.shape)
@@ -89,10 +89,10 @@ class BasicTransformer(nn.Module):
 
       return x
 
-# from torchsummary import summary
-# use_cuda = torch.cuda.is_available()
-# device = torch.device("cuda" if use_cuda else "cpu")
-# print(device)
-# net = BasicTransformer().to(device)
-# summary(net, input_size=(3, 32, 32))
+from torchsummary import summary
+use_cuda = torch.cuda.is_available()
+device = torch.device("cuda" if use_cuda else "cpu")
+print(device)
+net = BasicTransformer().to(device)
+summary(net, input_size=(3, 32, 32))
 
