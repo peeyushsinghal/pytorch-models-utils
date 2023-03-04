@@ -46,8 +46,15 @@ def train(model, device, train_loader, optimizer, epoch,criterion,train_accuracy
     loss.backward() # backpropagation
     optimizer.step() # updating the params
     
+    # if scheduler:
+    #   scheduler.step()
+
     if scheduler:
-      scheduler.step(loss.item())
+      if not isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+        scheduler.step()
+      else:
+        scheduler.step(loss.item())
+    
 
     preds = y_preds.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
     correct += preds.eq(labels.view_as(preds)).sum().item()
