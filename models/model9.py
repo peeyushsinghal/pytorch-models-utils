@@ -73,6 +73,7 @@ class TransformerUltimus(nn.Module):
     X = self.ultimus_blocks(X)
 
     X = self.ffc(X)
+    X = F.log_softmax(X, dim=-1)
     return X
 
 # from torchinfo import summary
