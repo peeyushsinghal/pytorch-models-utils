@@ -69,7 +69,7 @@ class TransformerUltimus(nn.Module):
     X = self.conv(x)
     X = self.gap(X)
     X = X.view(-1,48)
-    print(X.shape)
+    # print(X.shape)
     X = self.ultimus_blocks(X)
 
     X = self.ffc(X)
